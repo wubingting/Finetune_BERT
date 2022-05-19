@@ -43,5 +43,4 @@ torch.cuda.empty_cache()
 
 In the training and evaluation phase, losses.append(float(loss.item())) instead of loss.item().
 
-but the problem still occurs
-![ecb290058a9c8bc68ea12842cca195f](https://user-images.githubusercontent.com/49680463/169294963-14cb2e19-77dc-4a6d-b586-753e650d8247.png)
+but the problem still occurs.
