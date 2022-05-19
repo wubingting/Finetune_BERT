@@ -486,7 +486,7 @@ for epoch in range(EPOCHS):
     history['val_acc'].append(val_acc)
     history['val_loss'].append(val_loss)
     
-    print(history)
+    #print(history)
     
     #if val_acc > best_accuracy:
         #torch.save(model.state_dict(), 'best_model_state.bin')
