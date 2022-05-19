@@ -1,0 +1,27 @@
+Traceback (most recent call last):                                                               [25/142]  File "BERT_Hierarchical.py", line 465, in <module>                                                         len(train_ng['data'])                                                                                  File "BERT_Hierarchical.py", line 384, in train_epoch                                                      lengt=lengt                                                                                            File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 889, in _call_impl                                                                                       result = self.forward(*input, **kwargs)                                                                File "BERT_Hierarchical.py", line 293, in forward                                                          return_dict=False                                                                                      File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 889, in _call_impl                                                                                       result = self.forward(*input, **kwargs)
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/transformers/models/bert/modeling_bert.py", line 1006, in forward
+    return_dict=return_dict,
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/transformers/models/bert/modeling_bert.py", line 592, in forward
+    output_attentions,
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/transformers/models/bert/modeling_bert.py", line 477, in forward
+    past_key_value=self_attn_past_key_value,
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/transformers/models/bert/modeling_bert.py", line 409, in forward
+    output_attentions,
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/transformers/models/bert/modeling_bert.py", line 290, in forward
+    key_layer = self.transpose_for_scores(self.key(hidden_states))
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/module.py", line 889, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/modules/linear.py", line 94, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/vol/fob-vol3/nebenf20/wubingti/.local/lib/python3.6/site-packages/torch/nn/functional.py", line 1753, in linear
+    return torch._C._nn.linear(input, weight, bias)
+
+RuntimeError: CUDA out of memory. Tried to allocate 192.00 MiB (GPU 2; 79.17 GiB total capacity; 66.13 GiB already allocated; 8.88 MiB free; 66.35 GiB reserved in total by PyTorch)
