@@ -50,6 +50,14 @@ import os
 # 
 # get the 20newsgroups dataset and then split into training set (90%) and validation set(10%)
 
+print('Initializing BertTokenizer')
+
+BERTMODEL='bert-base-uncased'
+CACHE_DIR='transformers-cache'
+
+tokenizer = BertTokenizer.from_pretrained(BERTMODEL, cache_dir=CACHE_DIR,
+                                          do_lower_case=True)
+
 # In[ ]:
 
 
@@ -68,16 +76,37 @@ newsgroups = fetch_20newsgroups(subset='train', shuffle=True,
 #                                       random_state=238, remove=remove)
 
 data_train, data_val, label_train, label_val = train_test_split(newsgroups.data, newsgroups.target, test_size=0.1, random_state=42)
+
+
+label_train = label_train.tolist()
+label_val = label_val.tolist()
+tokenized_data = [tokenizer.tokenize(data) for data in data_train]
+data_length = [len(i) for i in tokenized_data]
+del_data_index = sorted(range(len(data_length)), key=lambda x: data_length[x])[-1000:]
+for index in sorted(del_data_index, reverse=True):
+    del data_train[index]
+    del label_train[index]
+
+tokenized_data = [tokenizer.tokenize(data) for data in data_val]
+data_length = [len(i) for i in tokenized_data]
+del_data_index = sorted(range(len(data_length)), key=lambda x: data_length[x])[-100:]
+for index in sorted(del_data_index, reverse=True):
+    del data_val[index]
+    del label_val[index]
+
 train_ng = {'data': data_train, 'target': label_train}
 val_ng = {'data': data_val, 'target': label_val}
 
-print("data loaded")
+#data_train = data_train.pop(66)
+#label_train = label_train.tolist().pop(66)
 
 # print('size of training set:', len(train_ng.data))
 # print('size of validation set:', len(val_ng.data))
 # print('classes:', train_ng.target_names)
 print('size of training set:', len(data_train))
+print('size of training set:', len(label_train))
 print('size of validation set:', len(data_val))
+print('size of validation set:', len(label_val))
 print('classes:', newsgroups.target_names)
 
 # data_train = train_ng.data
@@ -103,14 +132,13 @@ plt.show()
 # In[ ]:
 
 
-print('Initializing BertTokenizer')
+#print('Initializing BertTokenizer')
 
-BERTMODEL='bert-base-uncased'
-CACHE_DIR='transformers-cache'
+#BERTMODEL='bert-base-uncased'
+#CACHE_DIR='transformers-cache'
 
-tokenizer = BertTokenizer.from_pretrained(BERTMODEL, cache_dir=CACHE_DIR,
-                                          do_lower_case=True)
-
+#tokenizer = BertTokenizer.from_pretrained(BERTMODEL, cache_dir=CACHE_DIR,
+#                                          do_lower_case=True)
 
 # In[ ]:
 
@@ -259,8 +287,8 @@ def create_data_loader(newsgroups, tokenizer, max_len, batch_size):
 # In[ ]:
 
 
-#BATCH_SIZE = 16
-BATCH_SIZE = 1
+BATCH_SIZE = 16
+#BATCH_SIZE = 83
 MAX_LEN = 512
 
 train_data_loader = create_data_loader(train_ng, tokenizer, MAX_LEN, BATCH_SIZE)
@@ -287,12 +315,21 @@ class BERT_Hierarchical_Model(nn.Module):
         # pooled_output shape: (number of segments of all documents in one batch * 786)
         # In this small example, 7 * 786
         # here not batch_size * 786 because of segmentation of long document
+        # print(input_ids.shape)
+        #pooled_output_list=[]
+        #for i in range(len(input_ids)):
+           # _, pooled_output = self.bert(
+            #input_ids = input_ids[i].unsqueeze(0),
+            #attention_mask = attention_mask[i].unsqueeze(0),
+            #return_dict=False
+            #)
+            #pooled_output_list.append(pooled_output)
+
+        #pooled_output = torch.cat(pooled_output_list)
         _, pooled_output = self.bert(
-            input_ids = input_ids,
-            attention_mask = attention_mask,
-            return_dict=False
-        )
-        
+             input_ids = input_ids,
+             attention_mask = attention_mask,
+             return_dict=False)
         # split according to the number of segments 
         # then know which document the pooled_output belongs to 
         # chunks_emb (tensor([[doc1]]), tensor([[doc2]]), tensor([[doc3 seg1], [doc3 seg2], [doc3 seg3], [doc4 seg4]]), tensor([[doc4]])
